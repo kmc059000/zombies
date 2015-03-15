@@ -38,14 +38,14 @@ function start() {
 
 
     window.zombiesDisplay.viewport.draw();
-    intervals.push(setInterval(function () { window.zombiesDisplay.viewport.draw(); }, 100));
-    intervals.push(setInterval(function () { window.zombies.actionAllZombies(); }, 750));
+    intervals.push(setInterval(function () { window.zombiesDisplay.viewport.draw(); }, 20));
+	intervals.push(setInterval(function () { window.zombies.updateHealth(); }, 50));
+    intervals.push(setInterval(function () { window.zombies.actionAllZombies(); }, 500));
 }
 
-function getZombiesDisplay(display) {
-    var map = engine.getMap(80, 30);
+function getZombiesDisplay(display) { var map = engine.getMap(80, 30);
     var viewport = engine.getViewport(map, display, 80, 30);
-    var displayElement = display;
+	var healthElement = $('#health');
 
     var lose = function () {
         alert('Blargh!');
@@ -57,13 +57,17 @@ function getZombiesDisplay(display) {
         start();
     };
 
+	var updateHealth = function(health) {
+		healthElement.text(Math.round((health / 255) * 100) + '%');
+	};
+
     return {
         map: map,
         viewport: viewport,
         lose : lose,
-        win : win
+        win : win,
+	    updateHealth: updateHealth
     };
-
 };
 
 function getZombies(zombieDisplay) {
@@ -105,7 +109,7 @@ function getZombies(zombieDisplay) {
                 { x: el.x + 1, y: el.y + 1 },
                 { x: el.x + -1, y: el.y - 1 },
                 { x: el.x + -1, y: el.y + 0 },
-                { x: el.x + -1, y: el.y + 1 },
+                { x: el.x + -1, y: el.y + 1 }
             ];
 
             var zs = window.zombies.getZombiesAtPositions(positions);
@@ -127,6 +131,9 @@ function getZombies(zombieDisplay) {
             walk: walk,
             injure: injure,
             attack: attack,
+	        getHealth : function() {
+		        return health;
+	        }
         };
     } ();
 
@@ -242,6 +249,7 @@ function getZombies(zombieDisplay) {
                     if (charDist == 1) {
                         var remainingHealth = character.injure(Math.random() * this.health / 10);
 
+
                         if (remainingHealth == 0) {
                             zombieDisplay.lose();
                             return 0;
@@ -267,7 +275,7 @@ function getZombies(zombieDisplay) {
                 el: el,
                 health: health,
                 action: action,
-                injure: injure,
+                injure: injure
             };
         }
 
@@ -300,12 +308,17 @@ function getZombies(zombieDisplay) {
         }
     };
 
+	function updateHealth () {
+		zombieDisplay.updateHealth(character.getHealth());
+	}
+
 
     return {
         character : character,
         zombies : zombies,
         actionAllZombies : actionAllZombies,
-        getZombiesAtPositions : getZombiesAtPositions
+        getZombiesAtPositions : getZombiesAtPositions,
+	    updateHealth: updateHealth
     };
 
 };

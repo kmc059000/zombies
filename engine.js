@@ -63,12 +63,6 @@ engine.getMap = function (width, height) {
         return moved;
     };
 
-    
-
-    var removeElement = function (element) {
-        elements.index
-    }
-
     return {
         width: width,
         height: height,
@@ -138,7 +132,7 @@ engine.getViewport = function (map, outstream, width, height, defSymbol) {
             //var viewportIndex = this.getViewportIndex(el);
 
             output[mapIdx] = el;
-        };
+        }
 
         var s = '';
         //convert to string
