@@ -1,6 +1,9 @@
 ﻿/// <reference path="engine.js" />
 /// <reference path="jquery-1.7.2.min.js" />
 
+var numZombies = 200;
+var inverseZombieDamageRate = 50; //less is more damage
+var humanDamageBase = 150;
 var intervals = [];
 
 function start() {
@@ -77,7 +80,7 @@ function getZombies(zombieDisplay) {
         var el = engine.createElement('X', 0, 0, 100, null, false, true);
         var inventory = [];
         var health = 255;
-        var weapon = { name: 'Ice Pick', damage: 50 };
+        var weapon = { name: 'Ice Pick', damage: humanDamageBase };
 
         zombieDisplay.map.addElement(el);
 
@@ -247,7 +250,7 @@ function getZombies(zombieDisplay) {
                     charDist = Math.sqrt(Math.pow((el.x - character.el.x), 2) + Math.pow((el.y - character.el.y), 2));
                     //EAT BRAINS!
                     if (charDist == 1) {
-                        var remainingHealth = character.injure(Math.random() * this.health / 10);
+                        var remainingHealth = character.injure(Math.random() * this.health / inverseZombieDamageRate);
 
 
                         if (remainingHealth == 0) {
@@ -281,7 +284,7 @@ function getZombies(zombieDisplay) {
 
         var z = [];
 
-        for (var i = 0; i < 100; i++) {
+        for (var i = 0; i < numZombies; i++) {
             z.push(createZombie());
         }
 
