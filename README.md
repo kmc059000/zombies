@@ -10,6 +10,5 @@ Space - Attack zombies
 Dont die, get to the bottom right corner.
 
 ##todo
-* host it from github pages
-* improve shuffle
+* ~~host it from github pages~~
 * modernize it (update libraries, bower?, lodash?)
